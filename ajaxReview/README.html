@@ -1,0 +1,78 @@
+<html><head></head><body><link rel="stylesheet" type="text/css" href="chrome-extension://ckkdlimhmcjmikdlpkmbgfkaikojcbjk/themes/github.css" id="_theme"><div id="_html" class="markdown-body"><h1 id="ajax-review"><a class="anchor" name="ajax-review" href="#ajax-review"><span class="octicon octicon-link"></span></a>Ajax Review</h1>
+<h2 id="part-1"><a class="anchor" name="part-1" href="#part-1"><span class="octicon octicon-link"></span></a>Part 1</h2>
+<p>Use the <code>music</code> database for these exercises.</p>
+<ol>
+<li><p>Open the HTML file <a href="http://localhost/ajaxReview/artists.html">artists.html</a></p>
+</li>
+<li><p>Thoroughly examine the code in the HTML, JavaScript and PHP files.  Make sure you understand the code.</p>
+</li>
+<li><p>Update the code so the artist_id of each artist is shown as the first column in the HTML table shown.</p>
+</li>
+</ol>
+<h2 id="part-2"><a class="anchor" name="part-2" href="#part-2"><span class="octicon octicon-link"></span></a>Part 2</h2>
+<ol>
+<li><p>Run the PHP program <a href="http://localhost/ajaxReview/albums.php?artist_id=1">albums.php</a>.  Notice how it is passed an argument called <code>artist_id</code> and a value - this returns the album names for artist id 1.  In the address bar of your browser change the value of <code>artist_id</code> to 2 or 3 or 4 to see albums for other artists.</p>
+</li>
+<li><p>Provide the missing code in the <code>albums.js</code> function <code>showData()</code> to display the output shown below:</p>
+<p><img src="images/albums_html.png" alt="alt text" title="Albums"></p>
+</li>
+<li><p>Modify line 15 in <code>albums.js</code> so we get an Ajax request that gets album data for artist id 2 like this:</p>
+<pre><code>xmlhttp.open("GET", "albums.php?artist_id=2", true);  </code></pre><p>Examine the program <code>albums.php</code> carefully.  Particularly, lines 4 &amp; 8.</p>
+<p>Hopefully, you can see how a PHP program can be passed a specific value and in turn it will return data specific to that value. i.e.  we request data for a particular artist id and we get data for that artist id.  This is done alot in Ajax programming. </p>
+</li>
+<li><p>Uncomment the HTML button code from <code>albums.html</code> to reveal a button.  Refresh to see it.</p>
+</li>
+<li><p>Let's use the button to trigger the Ajax request.  Update the code in <code>albums.js</code> for the window onload event.  The code should look like this now:</p>
+<pre class=" language-javascript"><code class=" language-javascript">window<span class="token punctuation">.</span><span class="token function-variable function">onload</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+ document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function-variable function">onclick</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">getAjaxData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Clicking the button now should trigger the Ajax request.  Again, using events to trigger Ajax requests is done alot in Ajax programming.</p>
+</li>
+</ol>
+<h2 id="part-3"><a class="anchor" name="part-3" href="#part-3"><span class="octicon octicon-link"></span></a>Part 3</h2>
+<p>Use the <code>gaa2013</code> database for these exercises.  We are going to eventually filter gaa games by category.</p>
+<ol>
+<li><p>Run the PHP program <a href="http://localhost/ajaxReview/games.php">games.php</a>.  Notice how it returns all the game data (for now).  This is the data Ajax requests.</p>
+</li>
+<li><p>Run <a href="http://localhost/ajaxReview/games.html">games.html</a>.  It shows data for all games.  Examine the code in <code>games.html</code>, <code>games.js</code> and <code>games.php</code>.  You MUST understand this fundamental code.  If you don't ask for help.</p>
+</li>
+<li><p>Update the code in <code>games.js</code> to show the score (goals and points) for each team.</p>
+</li>
+<li><p>We're going to update the code to filter games by <em>category</em>.  Follow these steps carefully.</p>
+<p>In <code>games.php</code> comment out the code labeled (1) and uncomment the code labeled (2).  Lines 3-4 should now look like this:</p>
+<pre class=" language-php"><code class=" language-php"><span class="token comment">// (2)</span>
+<span class="token variable">$category</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'category'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>and lines 11-17 should look like this:</p>
+<pre class=" language-php"><code class=" language-php"><span class="token comment">// (1)</span>
+<span class="token comment">// $result = mysqli_query($connection,"select * from games");</span>
+
+<span class="token comment">//OR</span>
+
+<span class="token comment">// (2)</span>
+<span class="token variable">$result</span> <span class="token operator">=</span> <span class="token function">mysqli_query</span><span class="token punctuation">(</span><span class="token variable">$connection</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"select * from games where category = <span class="token interpolation"><span class="token variable">$category</span></span>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><code>games.php</code> can now filter the games by category.  Try it by running it using this URL:<a href="http://localhost/ajaxReview/games.php?category=1">http://localhost/ajaxReview/games.php?category=1</a></p>
+</li>
+<li><p>We'll update the JavaScript code to use this filtering. </p>
+<p>In <code>games.js</code> comment out the code labeled (1) and uncomment the code labeled (2).  Lines 18-22 should now look like this:</p>
+<pre class=" language-javascript"><code class=" language-javascript"><span class="token comment">// (1)</span>
+<span class="token comment">// xmlhttp.open("GET", "games.php", true);  </span>
+
+<span class="token comment">// (2)</span>
+xmlhttp<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"games.php?category=1"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+<p>Above, we're requesting games in category 1 (Ulster).  </p>
+<p>Run <a href="http://localhost/ajaxReview/games.html">games.html</a> again.  It should display the Ulster (1) category games.  Take time to examine and understand this code.</p>
+</li>
+<li><p>Next, in <code>games.js</code> comment out the code labeled (2) and uncomment the code labeled (3).  Run <code>games.html</code> again - you should see data from another category (Leinster).    </p>
+<p>A variable is introduced to store the category value and is passed in the Ajax request.  </p>
+</li>
+<li><p>Finally, uncomment the dropdown box code in <code>games.html</code>.  We'll use this dropdown to control the game data we want to filter.  You will need to add and uncomment code at the label (4) to implement this.</p>
+</li>
+</ol>
+<p><strong>If you need help just ask</strong></p>
+</div></body></html>
